@@ -9,7 +9,7 @@ services:
       MYSQL_PASSWORD: HMatrixDraw1
       MYSQL_DATABASE: u107481730_matrixDraw
     ports:
-      - "32768:3306"
+      - "3306:3306"
 
   app:
     build:

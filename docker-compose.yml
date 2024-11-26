@@ -5,8 +5,9 @@ services:
     image: mysql:8.0
     container_name: mysql_db
     environment:
-      MYSQL_ROOT_PASSWORD: toor
-      MYSQL_DATABASE: matrixDraw
+      MYSQL_USER: u107481730_heshanG
+      MYSQL_PASSWORD: HMatrixDraw1
+      MYSQL_DATABASE: u107481730_matrixDraw
     ports:
       - "32768:3306"
 
@@ -17,6 +18,6 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: mysql://root:toor@localhost:32768/matrixDraw
+      DATABASE_URL: mysql://u107481730_heshanG:HMatrixDraw1@localhost:3306/u107481730_matrixDraw
     depends_on:
       - mysql

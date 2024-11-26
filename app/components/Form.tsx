@@ -40,18 +40,12 @@ const answersB = [
 
 const MatrixForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [studentId, setStudentId] = useState<string>("");
-  const [answerStatus, setanswerStatus] = useState<boolean>(false);
+  const [answerResult, setanswerResult] = useState(false);
+  const [studentId, setStudentId] = useState<string | undefined>(undefined);
 
   const next = () => {
-    if (currentStep < steps.length - 1) {
+    if (currentStep <= steps.length - 1) {
       setCurrentStep((step) => step + 1);
-    }
-  };
-
-  const prev = () => {
-    if (currentStep > 0) {
-      setCurrentStep((step) => step - 1);
     }
   };
 
@@ -87,21 +81,21 @@ const MatrixForm = () => {
   });
 
   useEffect(() => {
-    console.log(answerStatus);
-
     if (studentState.success) {
-      if (questionState.answerStatus) {
-        toast.success(`Answers submitted!`);
-        setanswerStatus(true);
-        console.log("hi");
+      if (!questionState.success) {
+        toast.success(`You have been registered!`);
+        setStudentId(studentState.studentId);
         next();
-      // } else if (!questionState.answerStatus) {
-      //   toast.warning(`Your answers were wrong`);
-      //   next();
+      } else if (questionState.answerStatus) {
+        toast.success(`Answers submitted!`);
+        setanswerResult(true);
+        next();
       } else {
-        toast.success(`Answers are incorrect!`);
+        setanswerResult(false);
+        toast.warn(`Answers are incorrect!`);
+        next();
       }
-    } else if (studentState.error) {
+    } else if (!studentState.success) {
       if (studentState.studentId && studentState.error) {
         toast.error(`You have already filled the form!`);
       }
@@ -180,43 +174,42 @@ const MatrixForm = () => {
           </>
         )}
         {currentStep === 2 && (
-          <>
-            <div className="bg-red-100 relative p-4 mb-4 pb-16 mt-8 rounded-lg">
-              {answerStatus ? (
-                <div>
-                  <p>
-                    Congratulations🎉, you have completed the form successfully!
-                  </p>
-                  <p>You will be contacted by Matrix in the near future</p>
-                  <p>For more Information, please contact </p>
-                  <button className="flex absolute right-1 bg-orange-400 p-2 rounded-md justify-end">
-                    <Link
-                      className="font-bold text-red-600"
-                      href={"https://matrix-edu.com"}
-                    >
-                      Matrix IIT
-                    </Link>
-                  </button>
-                  <Confetti mode="boom" particleCount={1000} shapeSize={20} />
-                </div>
-              ) : (
+          <div className="bg-red-100 p-4 mb-4 pb-16 mt-8 rounded-lg">
+            {answerResult ? (
+              <div className="">
+                <Confetti mode="boom" particleCount={1000} shapeSize={20} />
                 <p>
-                  You were not able to answer either one question correctly bad
-                  luck!
+                  Congratulations🎉, you have completed the form successfully!
                 </p>
-              )}
-            </div>
-          </>
+                <p>You will be contacted by Matrix in the near future</p>
+                <p>For more Information, please contact </p>
+                <span className="flex justify-end">
+                <button className="flex bg-red-500 p-2 rounded-lg ">
+                  <Link
+                    className="font-bold text-white"
+                    href={"https://matrix-edu.com"}
+                    >
+                    Matrix IIT
+                  </Link>
+                </button>
+                    </span>
+              </div>
+            ) : (
+              <p>
+                You were not able to answer either one question correctly bad
+                luck!
+              </p>
+            )}
+          </div>
         )}
 
         <div className="flex justify-end">
           {currentStep < 2 && (
             <button
               type="submit"
-              disabled={currentStep === 2}
               className="bg-yellow-500 hover:bg-red-400 text-white text-md rounded-md py-1 px-2"
             >
-              {currentStep === 1 ? "Next" : "submit"}
+              {currentStep === 0 ? "Next" : "submit"}
             </button>
           )}
         </div>

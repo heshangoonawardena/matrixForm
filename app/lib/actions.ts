@@ -43,8 +43,6 @@ export const registerQuestion = async (
   currentState: CurrentState,
   data: QuestionSchema
 ) => {
-  // console.log(data);
-
   try {
     if (data.questionA === "2006" && data.questionB === "openai") {
       const result = await prisma.student.update({
@@ -55,7 +53,11 @@ export const registerQuestion = async (
           answer_correct: true,
         },
       });
-      return { success: true, error: false, answerStatus: true };
+      return {
+        success: true,
+        error: false,
+        answerStatus: result.answer_correct,
+      };
     } else {
       return { success: true, error: false, answerStatus: false };
     }

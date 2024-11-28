@@ -23,7 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.className}`}>
-        {children}
+        <div className="flex justify-center items-start h-screen w-screen bg-[#f7f29b] overflow-y-auto">
+          {children}
+        </div>
         <ToastContainer stacked position="top-right" theme="light" />
       </body>
     </html>

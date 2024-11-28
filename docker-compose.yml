@@ -18,6 +18,6 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: mysql://u107481730_heshanG:HMatrixDraw1@localhost:3306/u107481730_matrixDraw
+      DATABASE_URL: ${DATABASE_URL}
     depends_on:
       - mysql
